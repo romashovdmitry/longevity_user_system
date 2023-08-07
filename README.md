@@ -28,6 +28,8 @@ docker-compose up
 
 **4. Enjoy!**
 
+Open [Swagger page](http://127.0.0.1:8080/docs/) to utilize Swagger for interacting with the application. 
+
 ## Stack
 
 - [ ] Docker, docker compose for containerization
