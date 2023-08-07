@@ -14,7 +14,7 @@ services:
         ports: 
             - "8000:8000"
         depends_on:
-            - longevity_db6
+            - longevity_db
     longevity_db:
         image: postgres
         container_name: longevity_db
