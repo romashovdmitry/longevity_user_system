@@ -45,3 +45,11 @@ services:
         depends_on:
             - longevity
             - longevity_redis
+    create_super_user:
+        build: .
+        volumes:
+            - .:/usr/src/app
+        command: sh -c "python manage.py create_super_user"
+        depends_on:
+            - longevity
+            - longevity_db
