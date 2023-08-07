@@ -1,9 +1,11 @@
-from rest_framework.permissions import IsAdminUser
+# DRF import
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
+# import models
 from user.models.user import MyUser
 
 
-class CurrentUserPermission(IsAdminUser):
+class CurrentUserPermission(IsAdminUser, IsAuthenticated):
     ''' is user make update or not '''
     def has_object_permission(self, request, view, obj):
         # Разрешить только чтение всем

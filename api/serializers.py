@@ -14,6 +14,15 @@ from django.contrib.auth.hashers import check_password
 from user.hash import hashing
 
 
+def validate_fields_helper(email, username, password):
+    if not email and not username:
+        raise serializers.ValidationError("At least one of 'email' or 'username' is required.")
+
+    if not password:
+        raise serializers.ValidationError(
+            'Password is required field'
+        )
+
 class MyUserSerializer(serializers.ModelSerializer):
     ''' serializer for get objects of Product model'''
 
@@ -50,13 +59,7 @@ class MyUserSerializer(serializers.ModelSerializer):
         username = attrs.get('username')
         password = attrs.get('password')
 
-        if not email and not username:
-            raise serializers.ValidationError("At least one of 'email' or 'username' is required.")
-
-        if not password:
-            raise serializers.ValidationError(
-                'Password is required field'
-            )
+        validate_fields_helper(email, username, password)
 
         return attrs
 
@@ -69,8 +72,26 @@ class AuthSerializer(MyUserSerializer):
         username = attrs.get('username')
         password = attrs.get('password')
 
-        user = self.instance
+        validate_fields_helper(email, username, password)
 
+        if username:
+            user = MyUser.objects.filter(username=username).first()
+            if not user:
+                raise serializers.ValidationError(
+                    "API didn't find suitable user, "
+                    "try search by email or another username"
+                )
+
+        else:
+            user = MyUser.objects.filter(email=email).first()
+            if not user:
+                raise serializers.ValidationError(
+                    "API didn't find suitable user, "
+                    "try search by username or another email"
+                )
+        print(user)
+        print(password)
+        print(user.password)
         if user.check_password(password):
             refresh_token = RefreshToken.for_user(user)
             return {
@@ -80,4 +101,3 @@ class AuthSerializer(MyUserSerializer):
         raise serializers.ValidationError(
             'Incorrect password'
         )
-

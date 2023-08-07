@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.filters import SearchFilter
 
 # import models
 from user.models.user import MyUser
@@ -12,7 +13,7 @@ from user.models.user import MyUser
 from api.serializers import MyUserSerializer, AuthSerializer
 
 # JWT imports
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import RefreshToken
 
 # import custom classes
 from api.permissions import CurrentUserPermission
@@ -26,8 +27,7 @@ class MyUserViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'delete']
 
     def get_permissions(self):
-
-        if self.action == ['create', 'list']:
+        if self.action in ['create', 'list']:
             permission_classes = [IsAdminUser]
         elif self.action in ['update', 'partial_update', 'retrieve', 'destroy']:
             permission_classes = [CurrentUserPermission]
@@ -39,13 +39,19 @@ class MyUserViewSet(ModelViewSet):
         ''' registrate new user '''
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid()
-        user = serializer.create(serializer.validated_data)
-        user = serializer.save()
-        access_token = AccessToken.for_user(user)
+        validated_data = serializer.validated_data
+        instance = serializer.save()
+        instance.password = hashing(
+            validated_data['password'],
+            instance.id
+        )
+        instance.save()
+        refresh_token = RefreshToken.for_user(instance)
 
         response_data = {
             "user": serializer.validated_data,
-            "token": f'Bearer {str(access_token)}'
+            'access token': f'Bearer {str(refresh_token.access_token)}',
+            'refresh token': str(refresh_token)
         }
         return Response(response_data, status=HTTP_201_CREATED)        
 
@@ -61,10 +67,3 @@ class MyUserViewSet(ModelViewSet):
         )
         serializer.save()
         return Response(serializer.data, status=HTTP_200_OK)
-
-    @action(detail=False, methods=['post'], serializer_class=AuthSerializer)
-    def authorize_user(self, request) -> Response:
-        ''' authorize on API '''
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.validated_data, status=HTTP_200_OK)
