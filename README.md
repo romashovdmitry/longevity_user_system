@@ -4,13 +4,13 @@ DRF API service for user registration, authentication, and user data management.
 
 ## Quick Start
 
-1. Clone the repository
+**1. Clone the repository**
 
 ```
 git init
 git clone https://github.com/romashovdmitry/longevity_user_system.git
 ```
-2. There is a file example.env. Open this file, pass your comfortable values to variables and change name to .env. 
+**2. There is a file example.env. Open this file, pass your comfortable values to variables and change name to .env. **
 
 *SUPER_USERNAME, SUPER_PASSWORD, SUPER_EMAIL* - Constants for [automatic](https://github.com/romashovdmitry/longevity_user_system/blob/8a7151c13ef9207a7ddf85da684e9c5e27ddb395/docker-compose.yml#L10) [creation](https://github.com/romashovdmitry/longevity_user_system/blob/8a7151c13ef9207a7ddf85da684e9c5e27ddb395/user/management/commands/create_super_user.py#L12-L26) of admin superuser
 
@@ -20,10 +20,18 @@ git clone https://github.com/romashovdmitry/longevity_user_system.git
 
 *SECRET_KEY* - standart secret_key for Django project
 
-3. Run docker-compose 
+**3. Run docker-compose**
 
 ```
 docker-compose up
 ```
 
-4. Create a superuser to access the Django admin panel
+**4. Enjoy!**
+
+## Stack
+
+- [ ] Docker, docker compose for containerization
+- [ ] Framework: Django
+- [ ] API: Django Rest Framework (DRF)
+- [ ] Database: MySQL
+- [ ] Swagger for describing implemented methods in OpenAPI format
