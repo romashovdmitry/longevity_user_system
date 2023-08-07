@@ -1,0 +1,91 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Copy repo files to remote
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker stop
+        uses: appleboy/ssh-action@master
+        with:
+          host: 77.73.132.55
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: 22
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: 'master'
+      - name: Create .env file
+        run: |
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+            echo "DB_NAME=${{ secrets.POSTGRES_DB }}" >> .env
+            echo "PASSWORD_START=${{ secrets.PASSWORD_START }}" >> .env
+            echo "PASSWORD_FINISH=${{ secrets.PASSWORD_FINISH }}" >> .env
+            echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+      - name: Copy repo files to remote
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: 77.73.132.55
+          username: root
+          key: ${{ secrets.LAST_ONE_SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: 22
+          source: .
+          target: '/root/dmitry/PYCAB_TIMEWEB'
+          overwrite: true
+      - name: Copy .env to remote
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: 77.73.132.55
+          username: root
+          key: ${{ secrets.LAST_ONE_SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: 22
+          source: .env
+          target: '/root/dmitry/PYCAB_TIMEWEB'
+          overwrite: true
+      - name: Docker run
+        uses: appleboy/ssh-action@master
+        with:
+          host: 77.73.132.55
+          username: root
+          key: ${{ secrets.LAST_ONE_SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: 22
+          script: |
+            cd /root/dmitry/PYCAB_TIMEWEB
+            docker compose up -d
+
+# выводило список файлов. не отправляло файлы. 
+#          script: |
+#                  ls -al
+#                  whoami
+# rsync -avz --progress $GITHUB_WORKSPACE/ root@77.73.132.55:/
+
+
+
+#script: |
+#            ls -al
+
+
+
+#      - name: Create .env file
+
+#      - name: Copy repo files to remote
+#        uses: appleboy/scp-action@v0.1.4
+#        with:
+#          host: ${ secrets.HOST_IP_ADRESS }
+#          username: root
+#          key: ${{ secrets.LAST_ONE_SSH_PRIVATE_KEY }}
+#          port: 22
+#          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+#          source: ".env"
+#          target: '/home'

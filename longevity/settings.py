@@ -107,25 +107,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
 
 AUTH_USER_MODEL = 'user.MyUser'
-
-#CELERY_BROKER_URL = os.environ.get("CELERY_BROKER")
-#CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER")
 
 
 REST_FRAMEWORK = {
@@ -135,6 +118,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '1/day'
+    }
 }
 
 

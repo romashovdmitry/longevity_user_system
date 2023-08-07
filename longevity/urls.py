@@ -9,16 +9,15 @@ from .yasg import urlpatterns as SWAG
 from api.router import router
 
 # JWT imports
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from rest_framework_simplejwt.views import TokenRefreshView
+
+from api.views import CustomTokenObtainPairView
 
 urlpatterns = [
     # default URL
     path('admin/', admin.site.urls),
     # JWT URLs
-    path('api/token/', TokenObtainPairView.as_view()),
+    path('api/token/', CustomTokenObtainPairView.as_view()),
     path('api/token/refresh/', TokenRefreshView.as_view())
 ]
 

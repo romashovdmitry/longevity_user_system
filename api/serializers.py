@@ -7,21 +7,9 @@ from user.models.user import MyUser
 # JWT imports
 from rest_framework_simplejwt.tokens import RefreshToken
 
-# for password check import
-from django.contrib.auth.hashers import check_password
 
-# import custom classes
-from user.hash import hashing
-
-
-def validate_fields_helper(email, username, password):
-    if not email and not username:
-        raise serializers.ValidationError("At least one of 'email' or 'username' is required.")
-
-    if not password:
-        raise serializers.ValidationError(
-            'Password is required field'
-        )
+# import custm classes
+from api.validation import ValidateFieldsHelper
 
 class MyUserSerializer(serializers.ModelSerializer):
     ''' serializer for get objects of Product model'''
@@ -30,13 +18,15 @@ class MyUserSerializer(serializers.ModelSerializer):
         default=None,
         allow_blank=True,
         allow_null=True,
-        trim_whitespace=True
+        trim_whitespace=True,
+        label='Email'
     )
     username = serializers.CharField(
         max_length=128,
         allow_null=True,
         allow_blank=True,
-        trim_whitespace=True
+        trim_whitespace=True,
+        label='Username'
     )
     password = serializers.CharField(
         max_length=128,
@@ -59,7 +49,11 @@ class MyUserSerializer(serializers.ModelSerializer):
         username = attrs.get('username')
         password = attrs.get('password')
 
-        validate_fields_helper(email, username, password)
+        ValidateFieldsHelper(
+            email=email,
+            username=username,
+            password=password
+        ).validate_all()
 
         return attrs
 
@@ -72,7 +66,14 @@ class AuthSerializer(MyUserSerializer):
         username = attrs.get('username')
         password = attrs.get('password')
 
-        validate_fields_helper(email, username, password)
+        validation = ValidateFieldsHelper(
+            email=email,
+            username=username,
+            password=password
+        )
+        validation.validate_required()
+        validation.validate_required_email_user()
+        validation.validate_email()
 
         if username:
             user = MyUser.objects.filter(username=username).first()
@@ -89,9 +90,6 @@ class AuthSerializer(MyUserSerializer):
                     "API didn't find suitable user, "
                     "try search by username or another email"
                 )
-        print(user)
-        print(password)
-        print(user.password)
         if user.check_password(password):
             refresh_token = RefreshToken.for_user(user)
             return {
@@ -101,3 +99,16 @@ class AuthSerializer(MyUserSerializer):
         raise serializers.ValidationError(
             'Incorrect password'
         )
+
+
+class UpdateSerializer(MyUserSerializer):
+    ''' serializer for update user info '''
+    def validate(self, attrs):
+        '''
+        just to clean up validate method
+        from parent class MyUserSerializer
+        '''
+        email = attrs.get('email')
+        if email:
+            ValidateFieldsHelper(email=email).validate_email()
+        return attrs
