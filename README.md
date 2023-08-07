@@ -67,6 +67,8 @@ Open [Swagger page](http://127.0.0.1:8080/docs/) to utilize Swagger for interact
 
 **1. Implement secure password hashing and storage**: custom [password hashing](https://github.com/romashovdmitry/longevity_user_system/blob/f0885b0a09ed4de35ba1483780e3dcb57412ec24/user/hash.py#L14-L29) using static and dynamic salts(by user.id).
 
+Also app use [THROTTLE](https://github.com/romashovdmitry/longevity_user_system/blob/5d32fa40fcbe0f16930f57e2468d4f4b397499dd/longevity/settings.py#L121-L122) on [JWT token view](https://github.com/romashovdmitry/longevity_user_system/blob/5d32fa40fcbe0f16930f57e2468d4f4b397499dd/api/views.py#L115-L116) to control and limit the rate of requests 
+
 **2. Appropriate validation and error handling techniques**: [custom validation class](https://github.com/romashovdmitry/longevity_user_system/blob/f0885b0a09ed4de35ba1483780e3dcb57412ec24/api/validation.py#L13-L138) with a lot of validation methods.
 
 **3. Authentication and authorization mechanisms**: JWT authentication.
