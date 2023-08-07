@@ -61,8 +61,22 @@ docker-compose up
 - /api/update_me/
   - PUT: update information about autheniticated user
 
+## Task Requirements
+
+**1. Implement secure password hashing and storage**: custom [password hashing](https://github.com/romashovdmitry/longevity_user_system/blob/f0885b0a09ed4de35ba1483780e3dcb57412ec24/user/hash.py#L14-L29) using static and dynamic salts(by user.id).
+
+**2. Appropriate validation and error handling techniques**: [custom validation class](https://github.com/romashovdmitry/longevity_user_system/blob/f0885b0a09ed4de35ba1483780e3dcb57412ec24/api/validation.py#L13-L138) with a lot of validation methods.
+
+**3. Authentication and authorization mechanisms**: JWT authentication.
+
 ## Production
 
 API is accessible at the following link: http://1507839-cy37741.tw1.ru:8080/docs/
 
 For deployment, GitHub Actions are utilized for continuous [integration and continuous delivery (CI/CD)](https://github.com/romashovdmitry/longevity_user_system/blob/master/.github/workflows/longevity-deploy.yml). Minimal Nginx configurations have been set up on the server.
+
+## It Would Be Good
+
+1. To add logging
+2. To add swagger_auto_schema for describing possible responses
+3. Configure the server for SSL
