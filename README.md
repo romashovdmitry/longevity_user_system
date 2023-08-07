@@ -60,3 +60,9 @@ docker-compose up
   - GET: get information about autheniticated user
 - /api/update_me/
   - PUT: update information about autheniticated user
+
+##Production
+
+API is accessible at the following link: http://1507839-cy37741.tw1.ru:8080/docs/
+
+For deployment, GitHub Actions are utilized for continuous [integration and continuous delivery (CI/CD)](https://github.com/romashovdmitry/longevity_user_system/blob/master/.github/workflows/longevity-deploy.yml). Minimal Nginx configurations have been set up on the server.
