@@ -61,7 +61,7 @@ docker-compose up
 - /api/update_me/
   - PUT: update information about autheniticated user
 
-##Production
+## Production
 
 API is accessible at the following link: http://1507839-cy37741.tw1.ru:8080/docs/
 
