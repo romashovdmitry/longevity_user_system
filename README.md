@@ -23,7 +23,7 @@ git clone https://github.com/romashovdmitry/longevity_user_system.git
 **3. Run docker-compose**
 
 ```
-docker-compose up
+docker compose up
 ```
 
 **4. Enjoy!**
