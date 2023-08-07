@@ -24,44 +24,49 @@ jobs:
           ref: 'master'
       - name: Create .env file
         run: |
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+            echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
             echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-            echo "DB_NAME=${{ secrets.POSTGRES_DB }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
             echo "PASSWORD_START=${{ secrets.PASSWORD_START }}" >> .env
             echo "PASSWORD_FINISH=${{ secrets.PASSWORD_FINISH }}" >> .env
-            echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+            echo "DEFAULT_ALGO_HASH=${{ secrets.DEFAULT_ALGO_HASH }}" >> .env
+            echo "CUSTOM_HASH_ALGO=${{ secrets.CUSTOM_HASH_ALGO }}" >> .env
+            echo "SUPER_USERNAME=${{ secrets.SUPER_USERNAME }}" >> .env
+            echo "SUPER_PASSWORD=${{ secrets.SUPER_PASSWORD }}" >> .env
+            echo "SUPER_EMAIL=${{ secrets.SUPER_EMAIL }}" >> .env        
       - name: Copy repo files to remote
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: 77.73.132.55
+          host: ${{ secrets.REMOTE_HOST }}
           username: root
-          key: ${{ secrets.LAST_ONE_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
           source: .
-          target: '/root/dmitry/PYCAB_TIMEWEB'
+          target: '/root/dmitry/LONGEVITY'
           overwrite: true
       - name: Copy .env to remote
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: 77.73.132.55
+          host: ${{ secrets.REMOTE_HOST }}
           username: root
-          key: ${{ secrets.LAST_ONE_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
           source: .env
-          target: '/root/dmitry/PYCAB_TIMEWEB'
+          target: '/root/dmitry/LONGEVITY'
           overwrite: true
       - name: Docker run
         uses: appleboy/ssh-action@master
         with:
-          host: 77.73.132.55
+          host: ${{ secrets.REMOTE_HOST }}
           username: root
-          key: ${{ secrets.LAST_ONE_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
           script: |
-            cd /root/dmitry/PYCAB_TIMEWEB
+            cd /root/dmitry/LONGEVITY
             docker compose up -d
 
 # выводило список файлов. не отправляло файлы. 
@@ -84,7 +89,7 @@ jobs:
 #        with:
 #          host: ${ secrets.HOST_IP_ADRESS }
 #          username: root
-#          key: ${{ secrets.LAST_ONE_SSH_PRIVATE_KEY }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
 #          port: 22
 #          passphrase: ${{ secrets.SSH_PASSPHRASE }}
 #          source: ".env"
