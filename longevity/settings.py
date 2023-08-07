@@ -119,7 +119,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'user': '1/day'
+        'user': '20/day'
     }
 }
 
