@@ -67,7 +67,7 @@ jobs:
           port: 22
           script: |
             cd /root/dmitry/LONGEVITY
-            docker-compose up --build -e PORT=8080
+            docker compose up -d
 
 # выводило список файлов. не отправляло файлы. 
 #          script: |
