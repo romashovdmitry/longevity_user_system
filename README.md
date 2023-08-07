@@ -45,8 +45,13 @@ docker-compose up
     - GET: returns new access token via refresh token
 
 ***Admin Only Permission***
-- /v1/products/{id}
-    - GET: retrieve information about a single product by id
+- /api/users/
+    - GET: get list of users
+    - POST: create new user, registrate
+- /api/users/{id}/
+  - GET: get information about any user
+  - PUT: update information about any user
+  - DELETE: delete any user
 
 ***JWT Authentication Permission***
 - /api/users/delete_me
