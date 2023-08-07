@@ -10,12 +10,12 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 
-description = 'This application enables to parse ozon-page, '\
-    'scrab list of products and get result. '
+description = "DRF API service for user registration," \
+         " authentication, and user data management."
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Test Parsing API",
+      title="Longevity User System API",
       default_version='v1',
       description=description,
       terms_of_service=None,
