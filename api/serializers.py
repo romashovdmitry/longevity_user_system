@@ -29,6 +29,7 @@ class MyUserSerializer(serializers.ModelSerializer):
         label='Username'
     )
     password = serializers.CharField(
+        min_length=8,
         max_length=128,
         allow_null=True,
         trim_whitespace=True,

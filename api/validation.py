@@ -99,7 +99,7 @@ class ValidateFieldsHelper:
                 )
 
     def validate_password(self) -> None:
-        ''' validate password for ofr length and symbols '''
+        ''' validate password for length and symbols '''
         no_spaces_password = self.password.replace(
             " ", '').replace("\u2009", "")
         if len(no_spaces_password) < 8:
@@ -122,7 +122,6 @@ class ValidateFieldsHelper:
                 "Please, figure out "
                 "more diversse password."
             )
-        print('COME HERE')
         if not (self.validate_substring(no_spaces_password, self.username) and
                 self.validate_substring(self.password, self.username[::-1])):
             raise serializers.ValidationError(

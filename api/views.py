@@ -31,6 +31,7 @@ class UserViewSet(ModelViewSet):
     http_method_names = ['get', 'delete', 'put', 'post']
     pagination_class = UsersPagination
 
+    
     def get_permissions(self):
         if self.action == 'create':
             permission_classes = [IsAdminUser]
@@ -54,9 +55,6 @@ class UserViewSet(ModelViewSet):
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
-
-        return serializer.data
-
     def create(self, request, *args, **kwargs):
         ''' registrate new user '''
         serializer = self.serializer_class(data=request.data)
@@ -79,6 +77,7 @@ class UserViewSet(ModelViewSet):
             return Response(response_data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+    
 
     def update(self, request, *args, **kwargs) -> Response:
         ''' update user info '''
