@@ -35,3 +35,23 @@ docker-compose up
 - [ ] API: Django Rest Framework (DRF)
 - [ ] Database: MySQL
 - [ ] Swagger for describing implemented methods in OpenAPI format
+
+## API Endpoints
+
+***Allow Any Permission***
+- /token/
+    - GET: returns access and refresh token
+- /token/refresh/
+    - GET: returns new access token via refresh token
+
+***Admin Only Permission***
+- /v1/products/{id}
+    - GET: retrieve information about a single product by id
+
+***JWT Authentication Permission***
+- /api/users/delete_me
+  - POST: delete autheniticated user
+- /api/users/get/
+  - GET: get information about autheniticated user
+- /api/update_me/
+  - PUT: update information about autheniticated user
