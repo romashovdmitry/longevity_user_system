@@ -35,6 +35,7 @@ jobs:
             echo "SUPER_USERNAME=${{ secrets.SUPER_USERNAME }}" >> .env
             echo "SUPER_PASSWORD=${{ secrets.SUPER_PASSWORD }}" >> .env
             echo "SUPER_EMAIL=${{ secrets.SUPER_EMAIL }}" >> .env        
+            echo "HOST_URL=${{ secrets.HOST_URL }}" >> .env        
       - name: Copy repo files to remote
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -68,29 +69,3 @@ jobs:
           script: |
             cd /root/dmitry/LONGEVITY
             docker compose up -d
-
-# выводило список файлов. не отправляло файлы. 
-#          script: |
-#                  ls -al
-#                  whoami
-# rsync -avz --progress $GITHUB_WORKSPACE/ root@77.73.132.55:/
-
-
-
-#script: |
-#            ls -al
-
-
-
-#      - name: Create .env file
-
-#      - name: Copy repo files to remote
-#        uses: appleboy/scp-action@v0.1.4
-#        with:
-#          host: ${ secrets.HOST_IP_ADRESS }
-#          username: root
-#          key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          port: 22
-#          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-#          source: ".env"
-#          target: '/home'
